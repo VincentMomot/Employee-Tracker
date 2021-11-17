@@ -1,12 +1,29 @@
-INSERT INTO department (department_id)
-VALUES ("1","2","3");
-INSERT INTO department (department_name)
-VALUES ("Engineering","Sales","Testing");
+INSERT INTO department (name)
+VALUES ("Engineering"),
+       ("Sales"),
+       ("Assembly"),
+       ("Management");
 
-INSERT INTO role (role_id)
-VALUES ("1","2","3","4","5","6");
-INSERT INTO role (role_title)
-VALUES ("Electrical Engineering","Mechanical Engineering","Finaning","Accounting","Quality Assurance","Production/Assembly");
-INSERT INTO role (role_salary)
-VALUES (100,000),(100,000),(75,000),(75,000),(65,000),(70,000);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Electrical Engineer",80000,1),
+       ("Mechanical Engineer",80000,1),
+       ("Finance",200000,2),
+       ("Accountant",150000,2),
+       ("Factory Worker",260000,3),
+       ("Industrial Designer",265000,3),
+       ("Manager",95000,4);
+
+INSERT INTO employee (first_name,last_name,role_id)
+VALUES ("Elon","Musk",7),
+       ("Jeffrey","Epstein",7);
+
+INSERT INTO employee (first_name,last_name,role_id,manager_id)
+VALUES ("Danny","DeVido",1,1),
+       ("Betty","Crocker",2,1),
+       ("Grant","Cardone",3,1),
+       ("Mia","Khalifa",4,2),
+       ("Joseph","Biden",5,2),
+       ("Hunter","Biden",6,2);
+
+
 

@@ -28,3 +28,5 @@ FOREIGN KEY (manager_id)
 REFERENCES employee(id)
 );
 
+-- db.query('SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department ON role.department_id = department.id;', function (err, results) {
+role.title AS title, department.name AS department, role.salary AS salary, employee.manager_id AS manager 

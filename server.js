@@ -45,20 +45,28 @@ function tesla() {
       }
       else if (answers.operation == "View all departments") {
         db.query('SELECT * FROM department', function (err, results) {
-          console.log("\n");          
-        console.table(results);
+          console.log("\n");
+          console.table(results);
         });
         tesla()
       }
       else if (answers.operation == "View all roles") {
-        db.query('SELECT * FROM role', function (err, results) {
+        db.query(`SELECT role.id, role.title, department.name AS department, role.salary 
+        FROM role 
+        JOIN department 
+        ON role.department_id = department.id;`, function (err, results) {
           console.log("\n");
           console.table(results);
         })
         tesla()
       }
       else if (answers.operation == "View all employees") {
-        db.query('SELECT * FROM employee', function (err, results) {
+        db.query(`SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, role.salary AS salary, role.department_id AS department
+        FROM employee
+        JOIN role
+        ON employee.role_id = role.id
+        ;`
+        , function (err, results) {
           console.log("\n");
           console.table(results);
         })
@@ -72,22 +80,24 @@ function tesla() {
         }]).then(function (answers) {
           db.query(`INSERT INTO department (name) VALUES ("${answers.departmentName}")`, function (err, results) {
             console.log("\n");
-            console.table(results);
+            // console.table(results);
           })
+          tesla()
         })
-        tesla()
+       
       }
       else if (answers.operation == "Add a role") {
-        role()
-        tesla()
+        addRole()
+        //need tesla call
       }
       else if (answers.operation == "Add an employee") {
         newEmployee()
-        tesla()
+        //need tesla call
+
       }
       else if (answers.operation == "Update an employee role") {
         updateEmployee()
-        tesla()
+        //need tesla call
       }
       else {
         console.error(err)
@@ -97,41 +107,12 @@ function tesla() {
     })
 };
 
-//------------calls the initial function
+//------------calls the initial function still need addRole, newEmployee and updateEmployee 
 tesla();
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-
-
-function role() {
-  inquirer.prompt([{
-    type: "input",
-    message: "What is the department name?",
-    name: "title"
-  },
-  {
-    type: "input",
-    message: "What is the salary of the role?",
-    name: "salary"
-  },
-  {
-    //this should take from the db and be a rawlist
-    type: "input",
-    message: "What department is this role under?",
-    name: "department"
-  },
-
-  ]).then(function (answers) {
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${answers.title}",${answers.salary},${answers.department})`, function (err, results) {
-      console.log("\n");
-      console.table(results);
-    })
-  })
-}
 
 
 function newEmployee() {
@@ -166,14 +147,24 @@ function newEmployee() {
   })
 };
 
+const employeeSelect=[];
 
 function updateEmployee() {
+  db.query(`SELECT employee.first_name, employee.last_name FROM employee`, function (err, results) {
+    // console.table(results)
+    let employees = results
+    employees.map(employee => {
+      employeeSelect.push(employee)
+      
+    });
+  
   inquirer.prompt([
     {
       //this should take from the db and be a rawlist
-      type: "input",
+      type: "list",
       message: "Which employee's role do you want to change?",
-      name: "name"
+      name: "name",
+      choices: employeeSelect
     },
     {
       //this should take from the db and be a rawlist
@@ -189,24 +180,46 @@ function updateEmployee() {
         console.log(results);
       })
     })
-};
+})};
 
-// db.query(`SELECT name from department`, function (err, results) {
-// console.table(results)
-// let options=[];
-// for(let i=0; i<results.length; i++){
-//   options.push(`${JSON.stringify(results[i])}`)
+const departmentSelect=[];
 
-// };
-// console.table(options)
+function addRole() {
+  db.query(`SELECT name from department`, function (err, results) {
+    //console.table(results)
+    let departments = results
+    departments.map(department => {
+      departmentSelect.push(department)
+      
+    });
+    
+  //console.log(departmentSelect) 
+  inquirer.prompt([
+    {
+      type: "list",
+      message: "In what department does this role reside?",
+      name: "department",
+      choices: departmentSelect
+    },
+    {
+      type: "text",
+      message: "What is the name of the new role?",
+      name: "role"
+    },
+    {
+      type: "text",
+      message: "What is the salary of the new role?",
+      name: "salary"
+    }
+  ])
+  .then(function (answers) {
+    db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${answers.role}",${answers.salary},1)`, function (err, results) {
+      console.log("\n");
+      // console.table(results);
+    })
+    tesla();
+  })
+});
 
-// inquirer.prompt([
-//   {
-//     type: "list",
-//     message: "Choose your operation",
-//     name: "operation",
-//     choices: [options[0]]
-//   }
-// ])
+}
 
-// });

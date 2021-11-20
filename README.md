@@ -17,7 +17,7 @@ Use this application to create an employee database of employees, managers, posi
 [This is a link to the video walkthrough](https://youtu.be/ZvuHzxnRgKc)
 
 Screenshots of the site:
-![This is an image of my main page](/Assets/ss.png)
+![This is an image of my main page](/Assets/ss.PNG)
 
 
 

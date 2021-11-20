@@ -18,9 +18,9 @@ VALUES ("Elon","Musk",7),
        ("Jeffrey","Epstein",7);
 
 INSERT INTO employee (first_name,last_name,role_id,manager_id)
-VALUES ("Danny","DeVido",1,1),
+VALUES ("Danny","DeVido",1,4),
        ("Betty","Crocker",2,1),
-       ("Grant","Cardone",3,1),
+       ("Grant","Cardone",3,4),
        ("Mia","Khalifa",4,2),
        ("Joseph","Biden",5,2),
        ("Hunter","Biden",6,2);

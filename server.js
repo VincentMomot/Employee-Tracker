@@ -166,7 +166,8 @@ function newEmployee() {
       ]).then(function (answers) {
         const selectedRole = roleSelect.find(element => element.name == answers.role)
         const selectedManager = managerSelect.find(element => element.name == answers.manager)
-        db.query(`INSERT INTO employee (first_name,last_name,role_id,manager_id) VALUES ("${answers.fName}","${answers.lName}",${selectedRole.id},${selectedManager.id})`, function (err, results) {
+        db.query(`INSERT INTO employee (first_name,last_name,role_id,manager_id) VALUES 
+        ("${answers.fName}","${answers.lName}",${selectedRole.id},${selectedManager.id})`, function (err, results) {
           console.log("\n");
           console.table(results);
         })
@@ -222,10 +223,11 @@ function updateEmployee() {
             console.log("\n");
             console.log(results);
           })
+          tesla();
         })
     })
   });
-  tesla();
+  
 };
 
 const departmentSelect = [];
